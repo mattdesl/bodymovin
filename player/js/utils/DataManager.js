@@ -39,6 +39,14 @@ function dataFunctionManager(){
             }
             if(layerData.ty===0){
                 layerData.layers = findCompLayers(layerData.refId, comps);
+                if (layerData.ef) {
+                    layerData.layers.forEach(function (layer) {
+                        if (!layer.ef) {
+                            console.log('Applying parent effect to', layer.nm)
+                            layer.ef = copyEffect(layerData.ef, layerData.ip);
+                        }
+                    });
+                }
                 completeLayers(layerData.layers,comps, fontManager);
             }else if(layerData.ty === 4){
                 completeShapes(layerData.shapes);
@@ -46,6 +54,27 @@ function dataFunctionManager(){
                 completeText(layerData, fontManager);
             }
         }
+    }
+
+    function copyEffect (ef, ip) {
+        ip = ip || 0
+        const ret = ef.map(function (efData) {
+            efData = bm_assign({}, efData);
+            efData.ef = efData.ef.map(function (group) {
+                group = bm_assign({}, group);
+                group.v = bm_assign({}, group.v);
+                if (group.v.a) { // animated
+                    group.v.k = group.v.k.map(function (animData) {
+                       animData = bm_assign({}, animData);
+                       animData.t -= ip;
+                       return animData;
+                    });
+                }
+                return group;
+            });
+            return efData;
+        });
+        return ret;
     }
 
     function findCompLayers(id,comps){

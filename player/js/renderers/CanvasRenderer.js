@@ -183,11 +183,11 @@ CanvasRenderer.prototype.updateContainerSize = function () {
     if(this.animationItem.wrapper && this.animationItem.container){
         elementWidth = this.animationItem.wrapper.offsetWidth;
         elementHeight = this.animationItem.wrapper.offsetHeight;
-        this.animationItem.container.setAttribute('width',elementWidth * this.renderConfig.dpr );
-        this.animationItem.container.setAttribute('height',elementHeight * this.renderConfig.dpr);
+        this.animationItem.container.setAttribute('width', Math.floor(elementWidth * this.renderConfig.dpr));
+        this.animationItem.container.setAttribute('height', Math.floor(elementHeight * this.renderConfig.dpr));
     }else{
-        elementWidth = this.canvasContext.canvas.width * this.renderConfig.dpr;
-        elementHeight = this.canvasContext.canvas.height * this.renderConfig.dpr;
+        elementWidth = Math.floor(this.canvasContext.canvas.width * this.renderConfig.dpr);
+        elementHeight = Math.floor(this.canvasContext.canvas.height * this.renderConfig.dpr);
     }
     var elementRel,animationRel;
     if(this.renderConfig.preserveAspectRatio.indexOf('meet') !== -1 || this.renderConfig.preserveAspectRatio.indexOf('slice') !== -1){
@@ -272,10 +272,10 @@ CanvasRenderer.prototype.renderFrame = function(num){
         this.save();
     }
     this.ctxTransform(this.transformCanvas.props);
-    this.canvasContext.beginPath();
-    this.canvasContext.rect(0,0,this.transformCanvas.w,this.transformCanvas.h);
-    this.canvasContext.closePath();
-    this.canvasContext.clip();
+    // this.canvasContext.beginPath();
+    // this.canvasContext.rect(0,0,this.transformCanvas.w,this.transformCanvas.h);
+    // this.canvasContext.closePath();
+    // this.canvasContext.clip();
 
     //console.log('--------');
     //console.log('NEW: ',num);

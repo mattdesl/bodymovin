@@ -219,16 +219,31 @@ CVShapeElement.prototype.renderShape = function(parentTransform,items,data,isMai
         }
         renderer.save();
         elems = this.stylesList[i].elements;
+
+        var color = this.stylesList[i].co;
+        var opacity = this.stylesList[i].coOp;
+        if (this.effects && this.effects.effectElements && this.effects.effectElements[i]) {
+            const efGroup = this.effects.effectElements[i];
+            if (efGroup.effectElements.length >= 3) {
+                var rgb = efGroup.effectElements[2].p.v;
+                color = 'rgb('+bm_floor(rgb[0]*255)+','+bm_floor(rgb[1]*255)+','+bm_floor(rgb[2]*255)+')';
+            }
+            if (efGroup.effectElements.length >= 7) {
+                var alpha = efGroup.effectElements[6].p.v;
+                opacity = alpha;
+            }
+        }
         if(type === 'st'){
-            ctx.strokeStyle = this.stylesList[i].co;
+            ctx.strokeStyle = color;
             ctx.lineWidth = this.stylesList[i].wi;
             ctx.lineCap = this.stylesList[i].lc;
             ctx.lineJoin = this.stylesList[i].lj;
             ctx.miterLimit = this.stylesList[i].ml || 0;
         }else{
-            ctx.fillStyle = this.stylesList[i].co;
+            ctx.fillStyle = color;
+            
         }
-        renderer.ctxOpacity(this.stylesList[i].coOp);
+        renderer.ctxOpacity(opacity);
         if(type !== 'st'){
             ctx.beginPath();
         }

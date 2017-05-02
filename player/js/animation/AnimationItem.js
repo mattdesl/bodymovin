@@ -327,6 +327,7 @@ AnimationItem.prototype.renderFrame = function () {
     }
     //console.log('this.currentFrame:',this.currentFrame + this.firstFrame);
     this.renderer.renderFrame(this.currentFrame + this.firstFrame);
+    this.trigger('render');
 };
 
 AnimationItem.prototype.play = function (name) {
