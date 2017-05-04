@@ -558,6 +558,16 @@ AnimationItem.prototype.setCurrentRawFrameValue = function(value){
     this.gotoFrame();
 };
 
+AnimationItem.prototype.renderAllFrames = function () {
+    var oldFrame = this.currentRawFrame;
+    this.currentRawFrame = 0;
+    for (var i = 0; i < this.totalFrames; i++) {
+        this.currentRawFrame++;
+        this.gotoFrame();
+    }
+    this.currentRawFrame = oldFrame;
+};
+
 AnimationItem.prototype.setSpeed = function (val) {
     this.playSpeed = val;
     this.updaFrameModifier();

@@ -64,7 +64,12 @@ function bezFunction(){
                 perc = k/(curveSegments-1);
                 ptDistance = 0;
                 for(i=0;i<len;i+=1){
-                    ptCoord = bm_pow(1-perc,3)*pt1[i]+3*bm_pow(1-perc,2)*perc*pt3[i]+3*(1-perc)*bm_pow(perc,2)*pt4[i]+bm_pow(perc,3)*pt2[i];
+                    var invPerc = 1 - perc;
+                    var invPerc2 = invPerc * invPerc;
+                    var invPerc3 = invPerc2 * invPerc;
+                    var perc2 = perc * perc;
+                    var perc3 = perc2 * perc;
+                    ptCoord = invPerc3 * pt1[i] + 3 * invPerc2 * perc * pt3[i] + 3 * invPerc * perc2 * pt4[i] + perc3 * pt2[i];
                     point[i] = ptCoord;
                     if(lastPoint[i] !== null){
                         ptDistance += bm_pow(point[i] - lastPoint[i],2);

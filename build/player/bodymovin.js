@@ -1232,7 +1232,12 @@ function bezFunction(){
                 perc = k/(curveSegments-1);
                 ptDistance = 0;
                 for(i=0;i<len;i+=1){
-                    ptCoord = bm_pow(1-perc,3)*pt1[i]+3*bm_pow(1-perc,2)*perc*pt3[i]+3*(1-perc)*bm_pow(perc,2)*pt4[i]+bm_pow(perc,3)*pt2[i];
+                    var invPerc = 1 - perc;
+                    var invPerc2 = invPerc * invPerc;
+                    var invPerc3 = invPerc2 * invPerc;
+                    var perc2 = perc * perc;
+                    var perc3 = perc2 * perc;
+                    ptCoord = invPerc3 * pt1[i] + 3 * invPerc2 * perc * pt3[i] + 3 * invPerc * perc2 * pt4[i] + perc3 * pt2[i];
                     point[i] = ptCoord;
                     if(lastPoint[i] !== null){
                         ptDistance += bm_pow(point[i] - lastPoint[i],2);
@@ -1415,7 +1420,7 @@ function dataFunctionManager(){
                 if (layerData.ef) {
                     layerData.layers.forEach(function (layer) {
                         if (!layer.ef) {
-                            console.log('Applying parent effect to', layer.nm)
+                            // console.log('Applying parent effect to', layer.nm)
                             layer.ef = copyEffect(layerData.ef, layerData.ip);
                         }
                     });
@@ -11043,6 +11048,16 @@ AnimationItem.prototype.setCurrentRawFrameValue = function(value){
     }
 
     this.gotoFrame();
+};
+
+AnimationItem.prototype.renderAllFrames = function () {
+    var oldFrame = this.currentRawFrame;
+    this.currentRawFrame = 0;
+    for (var i = 0; i < this.totalFrames; i++) {
+        this.currentRawFrame++;
+        this.gotoFrame();
+    }
+    this.currentRawFrame = oldFrame;
 };
 
 AnimationItem.prototype.setSpeed = function (val) {

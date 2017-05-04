@@ -42,7 +42,7 @@ function dataFunctionManager(){
                 if (layerData.ef) {
                     layerData.layers.forEach(function (layer) {
                         if (!layer.ef) {
-                            console.log('Applying parent effect to', layer.nm)
+                            // console.log('Applying parent effect to', layer.nm)
                             layer.ef = copyEffect(layerData.ef, layerData.ip);
                         }
                     });
